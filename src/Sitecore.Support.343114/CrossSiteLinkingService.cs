@@ -19,7 +19,11 @@
                 switch (siteLinkSettings.GetValueOrDefault())
                 {
                     case CrossSiteLinkingMode.ItselfOnly:
-                        list.Add(MultisiteContext.GetHomeItem(item));
+                        var homeItem = MultisiteContext.GetHomeItem(item);
+                        if (homeItem != null)
+                        {
+                            list.Add(homeItem);
+                        }
                         break;
                     case CrossSiteLinkingMode.LinkableSitesInTenant:
                         {
@@ -33,7 +37,10 @@
                                         Item item3 = item.Database.GetItem(startPath);
                                         if (item3.Paths.LongID.StartsWith(tenantItem.Paths.LongID, StringComparison.OrdinalIgnoreCase))
                                         {
-                                            list.Add(item3);
+                                            if (item3 != null)
+                                            {
+                                                list.Add(item3);
+                                            }
                                         }
                                     }
                                 }
@@ -45,7 +52,10 @@
                             foreach (SiteContext site2 in GetSites(item))
                             {
                                 Item item2 = item.Database.GetItem(site2.StartPath);
-                                list.Add(item2);
+                                if (item2 != null)
+                                {
+                                    list.Add(item2);
+                                }
                             }
                             return list;
                         }
